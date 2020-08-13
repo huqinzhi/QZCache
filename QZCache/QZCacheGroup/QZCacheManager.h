@@ -34,6 +34,10 @@
  */
 -(id)readDataForKey:(NSString*)key;
 /*
+ 手动删除数据
+ */
+-(BOOL)removeDataForKey:(NSString *)key;
+/*
  设置最大本地缓存 单位为MB
  默认为50MB
  */

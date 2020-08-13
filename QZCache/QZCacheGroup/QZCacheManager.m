@@ -98,6 +98,17 @@ static NSString *const kQZCacheLocalMaxSize = @"QZCache.QZStorage.QZLocalMaxSize
     return data;
 }
 
+-(BOOL)removeDataForKey:(NSString *)key {
+    NSMutableDictionary *dataDic = self.downLoadData[key] != nil ? self.downLoadData : self.localData;
+    if (dataDic[key] == nil) {
+        return false;
+    }
+    [self.dataAccessor writeWithGCD:^{
+        [dataDic removeObjectForKey:key];
+    }];
+    return true;
+}
+
 -(void)storageDownLoadData:(NSData *)data withKey:(NSString *)key completion:(nullable void (^)(NSError * _Nullable error))completion {
     [self storageData:data withKey:key isDownLoad:YES completion:completion];
 }
@@ -172,58 +183,3 @@ static NSString *const kQZCacheLocalMaxSize = @"QZCache.QZStorage.QZLocalMaxSize
 }
 
 @end
-//    [self.dataAccessor writeWithGCD:^{
-//        //如果数据存在则修改最后使用时间
-//        if ([self.downLoadData valueForKey:key] != nil) {
-//            QZCacheDataModel *lastModel = [[QZCacheDataModel alloc]initWithDictionary:self.downLoadData[key]];
-//            [lastModel updateUseDate];
-//            self.downLoadData[key] = [lastModel dictionary];
-//            [self.downLoadData writeToFile:[QZCacheManager pathOfQZCacheDownLoad] atomically:YES];
-//            completion(nil);
-//            return;
-//        }
-//        QZCacheDataModel *model = [QZCacheDataModel new];
-//        model.data = data;
-//        model.length = data.length;
-//        model.lastUseDate = [NSDate date];
-//        NSUInteger allBytes = [[[self.downLoadData allValues]valueForKeyPath:@"@sum.length"]unsignedIntegerValue];;
-//        NSUInteger max = self.maxDownLoadSize * 1024 * 1024;
-//        if (data.length > max) {
-//            NSError *error = [NSError errorWithDomain:@"The data exceeds the maximum limit" code:5001 userInfo:nil];
-//            completion(error);
-//            return;
-//        }
-//        if (allBytes + data.length < max) {
-//            //小于直接存
-//            [self.dataAccessor writeWithGCD:^{
-//                self.downLoadData[key] = [model dictionary];
-//            }];
-//        } else {
-//            NSUInteger removeSize = data.length - (max - allBytes); // 需要删除的数据大小
-//            //根据最后使用时间把key排序
-//            NSArray<NSString*> *arrangement = [self.downLoadData keysSortedByValueUsingComparator:^NSComparisonResult(id _Nonnull obj1, id _Nonnull obj2) {
-//                QZCacheDataModel *m1 = [[QZCacheDataModel alloc]initWithDictionary:obj1];
-//                QZCacheDataModel *m2 = [[QZCacheDataModel alloc]initWithDictionary:obj2];
-//                return [m1.lastUseDate compare:m2.lastUseDate];
-//            }];
-//            __block NSUInteger removeCurrentSize = 0;
-//            NSMutableArray<NSString *> *removeKeyArr = [NSMutableArray new];
-//            [arrangement enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//                if (removeCurrentSize < removeSize) {
-//                    QZCacheDataModel *currentModel = [[QZCacheDataModel alloc]initWithDictionary:self.downLoadData[obj]];
-//                    removeCurrentSize += currentModel.length;
-//                    [removeKeyArr addObject:obj];
-//                } else {
-//                    *stop = YES;
-//                }
-//            }];
-//            [removeKeyArr enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//                [self.downLoadData removeObjectForKey:obj];
-//            }];
-//            //存储
-//            self.downLoadData[key] = [model dictionary];
-//        }
-//        //写入本地缓存
-//        [self.downLoadData writeToFile:[QZCacheManager pathOfQZCacheDownLoad] atomically:YES];
-//        completion(nil);
-//    }];

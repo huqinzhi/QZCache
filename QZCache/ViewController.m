@@ -26,7 +26,7 @@
 //    NSString *path = [[NSBundle mainBundle]pathForResource:@"testvideo1" ofType:@"mp4"];
 //    NSData *testData = [NSData dataWithContentsOfFile:path];
 //
-    [[QZCacheManager shareManager]configMaxDownLoadSizeOfMB:5];
+    [[QZCacheManager shareManager]configMaxDownLoadSizeOfMB:2.4];
     NSArray<NSString *> *urls = [NSArray arrayWithObjects:@"http://io.xiaoyu233.xyz:10809/testvideo1.mp4",@"http://io.xiaoyu233.xyz:10809/testImage1.jpeg",@"http://io.xiaoyu233.xyz:10809/testImage2.jpeg",@"http://io.xiaoyu233.xyz:10809/testImage3.jpeg",@"http://io.xiaoyu233.xyz:10809/testvideo2.mp4", nil];
     
 //    NSString *url = @"http://io.xiaoyu233.xyz:10809/testImage1.jpeg";
