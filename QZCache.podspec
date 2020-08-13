@@ -20,7 +20,7 @@ Pod::Spec.new do |spec|
 
   spec.subspec 'QZCache' do |ss|
      ss.ios.deployment_target = '8.0'
-     ss.source_files = 'QZCacheGroup/GN*.h','QZCacheGroup/GN*.m','QZCacheGroup/QZ*.h','QZCacheGroup/QZ*.m'
+     ss.source_files = 'QZCache/QZCacheGroup/GN*.h','QZCache/QZCacheGroup/GN*.m','QZCache/QZCacheGroup/QZ*.h','QZCache/QZCacheGroup/QZ*.m'
   end
 
 end
