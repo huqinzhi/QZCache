@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
   spec.name         = "QZCache"
   spec.version      = "1.0.0"
-  spec.summary      = "A short description of GNGcdTimer SDK for iOS."
+  spec.summary      = "A short description of QZCache SDK for iOS."
   spec.description  = <<-DESC
             TopOn SDK for developer
                    DESC
@@ -16,9 +16,9 @@ Pod::Spec.new do |spec|
   
   spec.user_target_xcconfig =   {'OTHER_LDFLAGS' => ['-lObjC']}
   spec.libraries = 'c++', 'z'
-  spec.default_subspecs = 'GNGcdTimer'
+  spec.default_subspecs = 'QZCache'
 
-  spec.subspec 'GNGcdTimer' do |ss|
+  spec.subspec 'QZCache' do |ss|
      ss.ios.deployment_target = '8.0'
      ss.source_files = 'QZCacheGroup/GN*.h','QZCacheGroup/GN*.m','QZCacheGroup/QZ*.h','QZCacheGroup/QZ*.m'
   end
